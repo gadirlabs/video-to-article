@@ -1,41 +1,69 @@
 ---
 name: video-to-article
-description: Turn a short video or a carousel you have already published into an article on your website. Starts from what you actually said, decides whether the piece is a build-log entry or a standalone article, rewrites speech as prose for a reader, replaces the video's on-screen cards with figures drawn for the page, checks every number against a source, wires the page into your site, and records where the piece went. Use when you have a run of videos or posts and want them findable on your own site, one page each.
+description: Turn the short videos and carousels you have already published on TikTok, Instagram or YouTube into articles on your own website, one page each. Starts with a short conversation about your set-up, pulls your recent videos and what you said in them, decides whether each piece is a build-log entry or a standalone article, rewrites speech as prose for a reader, draws the figures for the page instead of screenshotting the video, checks every number against a source, wires the page into your site, records where it went, and can set itself up to run on a schedule. Use when you have a run of videos or posts and want them findable on your own site.
 ---
 
 # Video to article
 
-You are turning a short video, or a carousel, into a page on the person's website. The video did its job on a feed, paced for a voice and a thumb. The page has a different reader: someone who arrived from a search or a link, wants the answer, and will read exactly as long as the page keeps giving them something. Nothing from the video is pasted; everything is adapted.
+You are turning someone's short videos, or carousels, into pages on their website. The video did its job on a feed, paced for a voice and a thumb. The page has a different reader: someone who arrived from a search or a link, wants the answer, and will read exactly as long as the page keeps giving them something. Nothing from the video is pasted; everything is adapted.
 
-Work through the six steps in order. Do not start writing before step 1 is settled, and do not ship before step 6 is done.
+Work through the steps in order. Step 0 happens once, the first time; after that the answers live in a file in the project and you read it. Do not start writing before step 1 is settled for a piece, and do not ship before step 6 is done.
 
-## What you need from the person
+## 0. The first conversation: find out the set-up
 
-- The video's transcript, corrected: what was actually said, not the script that was written. If only a script exists, say so in the page's record and use it, but the spoken version is the source when there is one. For a carousel, the approved slide copy.
-- Where their site keeps articles, and one existing article to copy the pattern from (the file layout, the metadata export, the components for figures and callouts, how images are imported). If the site has a build-log series as well as standalone articles, one of each.
-- Their writing rules, if they have any written down. If not, the rules in step 2 apply.
-- Any fact-check or review notes made when the video was produced. Apply them.
+The first time, before touching anything, ask. Keep it to one short exchange, and write the answers to `docs/video-to-article.md` in the website's repository so you never ask again.
 
-## 1. Decide what the piece becomes
+1. **Where do you post?** TikTok, Instagram, YouTube, or more than one. For each, the handle or channel.
+2. **How should I get at the videos?** The three routes, from least to most set-up, are in step 2. Offer them; take the one they choose. Never scrape a platform without being told to, and never use anyone else's account.
+3. **Where do the words come from?** Captions they wrote themselves, the platform's automatic captions, or nothing yet, in which case transcription happens here.
+4. **Where is the site, and which article do I copy?** The repository, where articles live, one existing article to take the pattern from, and whether the site also has a build-log series.
+5. **What lists pages by hand?** A series registry, a sitemap, a feed, a navigation, an index for AI readers. Anything not scanned from a folder needs editing when a page is added.
+6. **Any writing rules?** If they have them written down, read them. If not, the rules in step 3 apply.
+7. **Do you want this to run by itself?** If yes, step 7 sets up a scheduled routine, and that needs a Claude plan that includes routines, plus a way to reach the platforms without a browser (an API token or an export). Say so plainly before promising it.
+8. **How do you share what you publish?** Optional. If they answer comments or direct messages with a keyword automation (ManyChat or similar), note it: a finished page can be offered as that automation's reply, and the page's own record should say which keyword sends it.
+
+Record the answers, the date, and what was left undecided. That file is the brief for every later run.
+
+## 1. Decide what each piece becomes
 
 - **A build-log entry** when the piece reports the person's own project: a stage done, a decision taken, what happened, what is still open. It is a story told in order: what was attempted, what happened, what was decided, what is left. It says plainly what has not been built yet. It never claims a result the work has not produced.
 - **A standalone article** when the piece answers a question on its own: how to choose something, where to look for something, why a common habit is wrong. It does not report progress and does not depend on the video.
 - The entry for a stage links the article that belongs to that stage, in a short, clearly labelled optional-reading note. The article never assumes the reader saw the video.
-- Some pieces should not become a page: a promo, a joke, anything with no explanation in it. Say so and stop.
+- Some pieces should not become a page: a promo, a joke, a dance, anything with no explanation in it. Say so and move on.
 
-## 2. Adapt, do not transcribe
+## 2. Get the videos and what was said
+
+Work from what was actually said, never from a script that was written beforehand. The routes below were checked against each platform's own documentation on 31 October 2026; platforms change these, so if a call fails, read the current page before guessing.
+
+**The three routes, for any platform.** Offer all three in step 0.
+
+- *Paste.* The person gives you the link to each video and its transcript or caption, by hand. No set-up, works today, fine for a handful.
+- *Export.* Each platform lets an account download its own data as a file. TikTok: Settings → Account → Download your data (a JSON or text file listing each post with its link, description and date). Instagram: Accounts Centre → Your information and permissions → Download your information. YouTube: Google Takeout, which includes the channel's videos and their metadata. Exports arrive after a wait and contain the person's own posts only.
+- *API.* The official route for a routine. It needs a developer app, a token, and for some platforms an approval step. Details per platform below.
+
+**YouTube.** The YouTube Data API v3 lists a channel's own uploads (`channels.list` for the uploads playlist, then `playlistItems.list`) and `captions.list` shows the caption tracks on a video; `captions.download` needs an OAuth token from the video's owner and returns the track. Several guides report that it returns only captions the owner uploaded, not YouTube's automatic ones; for automatic captions, `yt-dlp --write-auto-subs --sub-langs "en.*" --skip-download "URL"` fetches the subtitle file without the video, and `--cookies-from-browser` lets it reach the person's own unlisted videos. yt-dlp reads public pages, not an API, so it can break when YouTube changes and it should only ever be pointed at the person's own videos.
+
+**TikTok.** The Display API's `POST /v2/video/list/` (scope `video.list`, through Login Kit) returns the account's own public videos, newest first, up to 20 per page with a cursor, and each video's `id`, `create_time`, `title`, `video_description`, `duration`, `share_url`, `embed_link`, `cover_image_url` and the counts. No field is a link to the video file, and TikTok's automatic captions are not exposed, so for the words either take the caption the person wrote, or get the file (the app's own Save video, the data export, or yt-dlp on `share_url`) and transcribe it in step 2b. The app needs TikTok's approval for Login Kit and the Display API before the token works.
+
+**Instagram.** The Instagram API with Instagram Login: a professional account (Business or Creator), a Business-type Meta app, the `instagram_business_basic` permission (it reads the account's own profile and media; an app reading only the owner's account does not need App Review, which Meta requires for data you do not own), and a token from the App Dashboard (long-lived, 60 days). `GET https://graph.instagram.com/<version>/<IG_ID>/media` lists the account's media; ask for the fields `id, caption, media_type, media_product_type, media_url, permalink, thumbnail_url, timestamp`, and keep `media_product_type = REELS` for the videos. `media_url` is left out for any video that contains licensed audio, including the person's own, so a Reel with music may have no file to fetch; the caption is still there, and the data export has the file. Instagram's automatic captions are not exposed either; transcribe.
+
+**2b. Transcription.** When there is a file and no written words, transcribe locally: whisper.cpp or faster-whisper with a large model, English or whichever language they speak. Correct the names and the product terms by hand before writing; a transcript with the wrong name in it ends up as a page with the wrong name in it. Keep the transcript beside the page's record.
+
+Keep a list of what has been turned into a page already, with each video's id and the page's path, in the same `docs/video-to-article.md`, so a run only looks at what is new.
+
+## 3. Adapt, do not transcribe
 
 Speech becomes prose for a reader who was not there.
 
 - **Open with what the reader came for.** The video's hook was written to stop a thumb; the page's first sentence is short and plain, and the first paragraph gives the answer or the result the title promises. Nothing opens with the process, a definition nobody asked for, or an account of what the series does.
 - **Cut the feed furniture.** "Follow for more", "subscribe", "okay bye", the part number, the greeting. The site's layout supplies the author box, the navigation and the next link.
 - **Keep the voice, lose the pacing.** The jokes stay where they land on the page and go where they needed the voice. A spoken list becomes a real list. A spoken "he" for a tool becomes "it".
-- **Apply the fact-check.** If the video's review found something wrong, the page gets the corrected version, never the spoken error.
+- **Apply any review notes** made when the video was produced. The page gets the corrected version, never the spoken error.
 - **Never turn notes into content.** A sentence that describes what the piece does, how good the method is, or what the series covers is a note to the writer and goes. Do the thing; never announce it. The forms that slip through: "so you can", "which is why", "there is no", "we always", "we never", "our approach", "that is how", "rather than just". Search for them before shipping.
 - **Every number has a source you inspected**, cited beside the claim, with the sources listed at the end. A number without a source is cut or softened to what can be stood behind. A link to a file in a repository is only added if that file is on the public branch.
 - **Nothing invented.** No quotation, approval, result, client reaction or decision that is not in the transcript or the project's own records.
 
-## 3. The page
+## 4. The page
 
 Copy the pattern of the existing article the person gave you, exactly: the same metadata export, the same layout component, the same way of declaring the contents list, the same heading markup, the same image imports. A page that follows the site's conventions needs no explanation; one that invents its own breaks the build or the listing.
 
@@ -46,7 +74,7 @@ Copy the pattern of the existing article the person gave you, exactly: the same 
 - A sources list at the end when anything was cited. No compulsory FAQ, no repeated conclusion, no sales pitch.
 - Publication date set to the day the page goes live, and never changed afterwards to make old material look new.
 
-## 4. Pictures: each one has to earn its place
+## 5. Pictures: each one has to earn its place
 
 These rules came from a real review, and each one was broken before it was written down.
 
@@ -59,18 +87,29 @@ These rules came from a real review, and each one was broken before it was writt
 - **Look at every drawn figure at both widths before it ships**, as an image, not as a type check. A shallow graph box turns a curve into a wave; a label can cross a ring; a bottom bar can poke past a phone's rounded corners; a two-word label can clip on a phone. Light comes first on a lightness axis when the strips beside it run light to dark. Check a figure's own numbers against the text, and drop a figure whose numbers disagree.
 - Convert images yourself, to the format and size the site uses, and keep the conversion to the files you added. A site-wide optimiser run can rewrite images you never touched.
 
-## 5. Wire it in
+## 6. Wire it in, check, record
 
-Whatever the site lists by hand needs the new page added: a series registry, a sitemap, a feed, a plain-text index for AI readers, a navigation. Whatever it lists by scanning a folder needs nothing. Check which is which by reading the site's code, not by assuming.
+1. Whatever the site lists by hand needs the new page added: a series registry, a sitemap, a feed, a plain-text index for AI readers, a navigation. Check which is which by reading the site's code, not by assuming.
+2. Read the page once as its one reader, the person who arrived from the title and cannot read code. Mark where they would stall, what they were told that they did not need, and what they needed that is missing. Fix those first.
+3. Run the sweep from step 3 for notes-as-content, and for any internal decisions that drifted in.
+4. Build the site the way its own instructions say, request the new pages, and crawl their links and anchors. Screenshot every figure at desktop and phone width and look at them.
+5. Record where the piece went in `docs/video-to-article.md`: the video's id and link, the page's path, the date, and which keyword automation offers it, if any.
+6. Commit only when asked. Deploy only when the person authorises it, and tell them everything the deploy would publish, not only your part.
 
-## 6. Check, record, hand over
+## 7. Run it on a schedule
 
-1. Read the page once as its one reader, the person who arrived from the title and cannot read code. Mark where they would stall, what they were told that they did not need, and what they needed that is missing. Fix those first.
-2. Run the sweep from step 2 for notes-as-content, and for any targeting language, persona names or internal decisions that drifted in.
-3. Build the site the way its own instructions say, request the new pages, and crawl their links and anchors. Screenshot every figure at desktop and phone width and look at them.
-4. Record where the piece went: in the video's own record, the page's path and the date; in the site's plan, the new pages. Set the publication date to the real day.
-5. Commit only when asked. Deploy only when the person authorises it, and tell them everything the deploy would publish, not only your part.
+If the person said yes in step 0, set the work up as a Claude Code **scheduled task** (the docs' current name for a routine). The facts below are from the Claude Code documentation as read on 31 October 2026; the feature is in research preview, so check `code.claude.com/docs/en/routines` before promising a detail.
+
+- **Who can.** Scheduled tasks are on the Pro, Max, Ultra, Team and Enterprise plans, and each run draws on the plan's usage like an ordinary session. Someone on the free plan runs this skill by hand instead, which works just as well, one conversation a week.
+- **How.** `/schedule` in the terminal, or claude.ai/code/routines, with the website repository attached. Weekly is the right cadence for most people; the smallest interval allowed is hourly. Each run is a fresh cloud session that clones the repository, so everything the run needs has to be in the repository or reachable over the network: the set-up file from step 0, the list of pages already made, the transcripts.
+- **What a run does.** Read `docs/video-to-article.md`; fetch the account's videos since the last run through the route chosen in step 0; for each one with words available, write the page exactly as in steps 1 to 6; commit to a `claude/` branch; open a draft pull request that lists the videos found, the pages written, and the ones skipped for having no transcript. The person reads, merges and deploys. A run never deploys and never pushes to the default branch.
+- **Reaching the platforms.** The cloud environment's network access is a list of allowed hosts. Google's API hosts are on the default list, so the YouTube route works as is; TikTok's and Meta's hosts have to be added under Custom access. API keys go in as **network secrets**, which the proxy attaches to requests for the hosts you name and which never enter the session; never put a key in an environment variable, where anyone using the environment can read it.
+- **Words without captions.** The cloud session has no transcription tool. Where a platform gives captions (YouTube's own tracks, or captions the person wrote), the run has what it needs. Where it does not (a TikTok or a Reel with no caption), the run lists the video in the pull request as waiting for a transcript, and the person adds the transcript by hand or through a hosted transcription service reached with a network secret. Do not promise automatic transcription of TikToks and Reels in the cloud; say what the routine will and will not do.
+- **Limits worth knowing.** Runs can start a few minutes after the scheduled time; a task can be fired at most thirty times an hour; a command inside a run times out after two minutes unless the prompt raises it. Keep each run small: a handful of videos, not a back catalogue. The back catalogue is a conversation.
+
+Write the routine's prompt as a short brief that points at the set-up file and this skill, names the branch and the pull-request format, and says plainly that it must not deploy.
+
 
 ## What this skill will not do
 
-It will not paste a transcript onto a page and call it an article. It will not keep a number it cannot source. It will not invent a quotation or a result. It will not screenshot a video to illustrate a page. It will not deploy on its own.
+It will not paste a transcript onto a page and call it an article. It will not keep a number it cannot source. It will not invent a quotation or a result. It will not screenshot a video to illustrate a page. It will not scrape a platform it was not told to, or use an account that is not the person's own. It will not deploy on its own.
