@@ -76,7 +76,10 @@ Copy the pattern of the existing article the person gave you, exactly: the same 
 
 ## 5. Pictures: each one has to earn its place
 
-These rules came from a real review, and each one was broken before it was written down.
+These rules came from real reviews, and each one was broken before it was written down.
+
+- **The page carries the video's visual weight.** Every idea the video spent a drawing on becomes a figure on the page, one per idea, redrawn for the page. A video that was half drawings once became a page with one table under a thousand words, and read as a wall of text; its sibling kept all six of its drawings and read like the video. Before shipping, list the video's graphics beside the page's figures: a page with far fewer has lost something. Architecture and system drawings are the ones a build-log reader comes for.
+- **A GIF or a graphic where the video had a GIF, by tone.** The reaction clip does not have to return as the same GIF, or as a GIF at all; it can be a GIF, a drawn graphic or nothing. The test is whether the page keeps the tone of the line it sat on: a joke that survives as a joke can carry a GIF; a hook that is gone from the page takes its GIF with it. Feel the tone of the paragraph before deciding, and never decorate a paragraph that has become plain prose.
 
 - **Never lift the video's on-screen cards as screenshots.** A card that repeats the heading it sits under, the same idea shown twice because the video spread it over two cards, a frame caught before an animation finished: all of these read as lifted, and they are. A video card is paced for a voice; on a page it duplicates the prose around it.
 - **Never ship a picture of something the page could render.** A row of three options, a link in a pill, a before-and-after strip, a tree of folders: draw it as an inline SVG in the site's own style, with the site's colours and fonts, dark mode included, and a title and description for people who cannot see it. A list, a tree or a table is text. A docs folder is a code block; a stack is a bullet list.
