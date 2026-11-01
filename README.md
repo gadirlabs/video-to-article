@@ -22,7 +22,7 @@ The first time, it asks a few questions and writes the answers into your reposit
 4. **Follows your site's pattern exactly**, from the metadata to the way images are imported.
 5. **Draws the pictures for the page.** Diagrams as inline SVG in your site's style. Photographs only when they show the subject, credited. Product names as a quiet row of icons or in bold. Never a screenshot of the video's own cards, and never a picture of something the page could render.
 6. **Wires the page in, checks and records.** A read as the one reader, a sweep for sentences that are notes rather than content, a build and a link crawl, a look at every figure at desktop and phone width, and a record of where the piece went.
-7. **Runs on a schedule, if you want.** As a Claude Code scheduled task on a Pro, Max, Team or Enterprise plan: it clones your site, looks for videos since the last run, drafts the pages on a branch and opens a pull request. You read, you merge, you deploy.
+7. **Runs on a schedule, if you want.** As a Claude Code scheduled task (Pro, Max, Ultra, Team or Enterprise): it clones your site, pulls the posts since the last run with their transcripts through a creator-data API key (the included `scripts/pull_posts.py`, reading only your own handles), drafts the pages on a branch and opens a pull request. You read, you merge, you deploy. `routine.md` is the prompt to paste in.
 
 ## What it is not
 

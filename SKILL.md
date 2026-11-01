@@ -11,7 +11,7 @@ Work through the steps in order. Step 0 happens once, the first time; after that
 
 ## 0. The first conversation: find out the set-up
 
-The first time, before touching anything, ask. Keep it to one short exchange, and write the answers to `docs/video-to-article.md` in the website's repository so you never ask again.
+The first time, before touching anything, ask. Keep it to one short exchange, and write the answers to `docs/video-to-article/brief.md` in the website's repository so you never ask again (the folder also holds `config.json` and `done.json` once the skill runs by itself, step 7).
 
 1. **Where do you post?** TikTok, Instagram, YouTube, or more than one. For each, the handle or channel.
 2. **How should I get at the videos?** The three routes, from least to most set-up, are in step 2. Offer them; take the one they choose. Never scrape a platform without being told to, and never use anyone else's account.
@@ -19,7 +19,7 @@ The first time, before touching anything, ask. Keep it to one short exchange, an
 4. **Where is the site, and what kinds of page does it have?** The repository, where the pages live, and one existing page of each kind to take the pattern from. Most sites have one kind, a blog post. Some have more: a journal or build log of their own project, a series with numbered parts, case studies, documentation, a newsletter archive. Every kind the site already has is a kind a video can become; the skill never invents a new one.
 5. **What lists pages by hand?** A series registry, a sitemap, a feed, a navigation, an index for AI readers. Anything not scanned from a folder needs editing when a page is added.
 6. **Any writing rules?** If they have them written down, read them. If not, the rules in step 3 apply.
-7. **Do you want this to run by itself?** If yes, step 7 sets up a scheduled routine, and that needs a Claude plan that includes routines, plus a way to reach the platforms without a browser (an API token or an export). Say so plainly before promising it.
+7. **Do you want this to run by itself?** If yes, step 7 sets it up: a Claude Code scheduled task on a plan that includes them, a creator-data API key (ScrapeCreators) stored as a network secret, and the site building from a repository. Say what it costs before promising it.
 8. **Do you still have the files the video was made from?** Optional, and often the answer is no. The drawings' source (a design file, an overlay, a slide deck), the screen recordings, the renders, the clips of a character, the data behind a chart. They make the page's figures faster and truer: a figure is redrawn for the page either way, but from the source it keeps the real numbers, the real screens and the real character. Without them, the published video is enough; frames are read as a reference, never pasted.
 9. **How do you share what you publish?** Optional. If they answer comments or direct messages with a keyword automation (ManyChat or similar), note it: a finished page can be offered as that automation's reply, and the page's own record should say which keyword sends it.
 
@@ -63,7 +63,7 @@ Work from what was actually said, never from a script that was written beforehan
 
 **2b. Transcription.** When there is a file and no written words, transcribe locally: whisper.cpp or faster-whisper with a large model, English or whichever language they speak. Correct the names and the product terms by hand before writing; a transcript with the wrong name in it ends up as a page with the wrong name in it. Keep the transcript beside the page's record.
 
-Keep a list of what has been turned into a page already, with each video's id and the page's path, in the same `docs/video-to-article.md`, so a run only looks at what is new.
+Keep a list of what has been turned into a page already, with each video's platform, id and the page's path, in `docs/video-to-article/done.json`, so a run only looks at what is new. When the person has a creator-data API key, `scripts/pull_posts.py` does the listing and the transcripts (step 7).
 
 ## 3. Adapt, do not transcribe
 
@@ -115,19 +115,17 @@ These rules came from real reviews, and each one was broken before it was writte
 5. Record where the piece went in `docs/video-to-article.md`: the video's id and link, the page's path, the date, and which keyword automation offers it, if any.
 6. Commit only when asked. Deploy only when the person authorises it, and tell them everything the deploy would publish, not only your part.
 
-## 7. Run it on a schedule
+## 7. Run it by itself, if they want
 
-If the person said yes in step 0, set the work up as a Claude Code **scheduled task** (the docs' current name for a routine). The facts below are from the Claude Code documentation as read on 31 October 2026; the feature is in research preview, so check `code.claude.com/docs/en/routines` before promising a detail.
+The set-up that works today, tested on 1 November 2026, has three parts: a way to read the person's own posts without a browser, a place for the run to happen on a schedule, and a prompt that ties them to this skill. None of the three platforms offers an MCP server for a creator's own content (TikTok's is for advertisers), and the MCP servers on offer for this are vendors' wrappers over the same scraping APIs, so go to the API directly.
 
-- **Who can.** Scheduled tasks are on the Pro, Max, Ultra, Team and Enterprise plans, and each run draws on the plan's usage like an ordinary session. Someone on the free plan runs this skill by hand instead, which works just as well, one conversation a week.
-- **How.** `/schedule` in the terminal, or claude.ai/code/routines, with the website repository attached. Weekly is the right cadence for most people; the smallest interval allowed is hourly. Each run is a fresh cloud session that clones the repository, so everything the run needs has to be in the repository or reachable over the network: the set-up file from step 0, the list of pages already made, the transcripts.
-- **What a run does.** Read `docs/video-to-article.md`; fetch the account's videos since the last run through the route chosen in step 0; for each one with words available, write the page exactly as in steps 1 to 6; commit to a `claude/` branch; open a draft pull request that lists the videos found, the pages written, and the ones skipped for having no transcript. The person reads, merges and deploys. A run never deploys and never pushes to the default branch.
-- **Reaching the platforms.** The cloud environment's network access is a list of allowed hosts. Google's API hosts are on the default list, so the YouTube route works as is; TikTok's and Meta's hosts have to be added under Custom access. API keys go in as **network secrets**, which the proxy attaches to requests for the hosts you name and which never enter the session; never put a key in an environment variable, where anyone using the environment can read it.
-- **Words without captions.** The cloud session has no transcription tool. Where a platform gives captions (YouTube's own tracks, or captions the person wrote), the run has what it needs. Where it does not (a TikTok or a Reel with no caption), the run lists the video in the pull request as waiting for a transcript, and the person adds the transcript by hand or through a hosted transcription service reached with a network secret. Do not promise automatic transcription of TikToks and Reels in the cloud; say what the routine will and will not do.
-- **Limits worth knowing.** Runs can start a few minutes after the scheduled time; a task can be fired at most thirty times an hour; a command inside a run times out after two minutes unless the prompt raises it. Keep each run small: a handful of videos, not a back catalogue. The back catalogue is a conversation.
+**Reading the posts.** The route with the least set-up is a creator-data API that reads public posts with one key: ScrapeCreators (scrapecreators.com) is the one this skill ships a script for. No developer app, no platform approval, about one credit a call, and it returns each post's caption and date, plus a transcript on request: the platform's own captions where they exist, an AI transcript otherwise (TikTok and Instagram transcripts are AI-made and cost a credit each; YouTube's come from its caption track). It reads only the handles in the config, the person's own accounts. It is an unofficial route, so it can break when a platform changes and is not a platform's own promise; the official APIs in step 2 are the alternative for someone who wants that, at the cost of the app set-up. `scripts/pull_posts.py` does the reading: it keeps a config (`docs/video-to-article/config.json`: the handles, the date to start from, how many posts per platform), skips posts already turned into pages (`docs/video-to-article/done.json`), fetches transcripts for the new videos, and writes an inbox file the run then works through. Photo and carousel posts come through with their caption and no transcript.
 
-Write the routine's prompt as a short brief that points at the set-up file and this skill, names the branch and the pull-request format, and says plainly that it must not deploy.
+**Where it runs.** A Claude Code scheduled task (Pro, Max, Ultra, Team or Enterprise; `/schedule` in the CLI or claude.ai/code/routines) runs a full cloud session on a schedule: it clones the website repository, loads the skill from `.claude/skills/`, runs the script and the build, and pushes a `claude/` branch for the person to review; the run's session is where a pull request is created. Its cloud environment needs two settings: the API key as a **network secret** for the host `api.scrapecreators.com` (the agent proxy then attaches the key and the session never sees it; an environment variable `SCRAPECREATORS_API_KEY` works too but is visible to anyone using the environment), and **Custom** network access with `api.scrapecreators.com` on the allowed domains, keeping the default package registries. Runs count against the account's usage. For someone without those plans, the same prompt runs from a GitHub Actions cron with the Claude Code action and the two keys as repository secrets.
 
+**The prompt** is in `routine.md`: pull, decide, write, record, branch, pull request, never deploy. The person reads the pull request, merges and deploys as they always do. Weekly suits most; a run with nothing new pushes nothing.
+
+**Say what it is before promising it.** Automation needs a paid plan, a paid API key and a site that builds from a repository. Say that in step 0 when the person asks for it, and offer the manual route (paste the links) as the alternative that costs nothing.
 
 ## What this skill will not do
 
