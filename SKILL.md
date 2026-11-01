@@ -16,7 +16,7 @@ The first time, before touching anything, ask. Keep it to one short exchange, an
 1. **Where do you post?** TikTok, Instagram, YouTube, or more than one. For each, the handle or channel.
 2. **How should I get at the videos?** The three routes, from least to most set-up, are in step 2. Offer them; take the one they choose. Never scrape a platform without being told to, and never use anyone else's account.
 3. **Where do the words come from?** Captions they wrote themselves, the platform's automatic captions, or nothing yet, in which case transcription happens here.
-4. **Where is the site, and which article do I copy?** The repository, where articles live, one existing article to take the pattern from, and whether the site also has a build-log series.
+4. **Where is the site, and what kinds of page does it have?** The repository, where the pages live, and one existing page of each kind to take the pattern from. Most sites have one kind, a blog post. Some have more: a journal or build log of their own project, a series with numbered parts, case studies, documentation, a newsletter archive. Every kind the site already has is a kind a video can become; the skill never invents a new one.
 5. **What lists pages by hand?** A series registry, a sitemap, a feed, a navigation, an index for AI readers. Anything not scanned from a folder needs editing when a page is added.
 6. **Any writing rules?** If they have them written down, read them. If not, the rules in step 3 apply.
 7. **Do you want this to run by itself?** If yes, step 7 sets up a scheduled routine, and that needs a Claude plan that includes routines, plus a way to reach the platforms without a browser (an API token or an export). Say so plainly before promising it.
@@ -27,9 +27,12 @@ Record the answers, the date, and what was left undecided. That file is the brie
 
 ## 1. Decide what each piece becomes
 
-- **A build-log entry** when the piece reports the person's own project: a stage done, a decision taken, what happened, what is still open. It is a story told in order: what was attempted, what happened, what was decided, what is left. It says plainly what has not been built yet. It never claims a result the work has not produced.
-- **A standalone article** when the piece answers a question on its own: how to choose something, where to look for something, why a common habit is wrong. It does not report progress and does not depend on the video.
-- The entry for a stage links the article that belongs to that stage, in a short, clearly labelled optional-reading note. The article never assumes the reader saw the video.
+Each video becomes one of the kinds of page the site already has (step 0, question 4), chosen by what the video is, and the person is told which and why before anything is written.
+
+- **A piece that reports the person's own work** (a stage done, a decision taken, what happened, what is still open) becomes a page in whatever the site uses for that: a journal, a build log, a project series, a changelog. It is a story told in order: what was attempted, what happened, what was decided, what is left. It says plainly what has not been built yet and never claims a result the work has not produced. If the site has no such kind, it becomes an ordinary post that reads the same way.
+- **A piece that answers a question on its own** (how to choose something, where to look for something, why a common habit is wrong) becomes an article or post. It does not report progress and does not depend on the video.
+- **A piece that walks through a procedure** becomes a guide or a documentation page where the site has one, with the steps as steps.
+- When two pages belong together (an entry about a stage and the article that explains a question from that stage), the one links the other in a short, clearly labelled note. Neither assumes the reader saw the video.
 - Some pieces should not become a page: a promo, a joke, a dance, anything with no explanation in it. Say so and move on.
 
 ## 2. Get the videos and what was said
@@ -71,7 +74,7 @@ Copy the pattern of the existing article the person gave you, exactly: the same 
 - Title and description for listings and search; a short summary that gives the takeaway, who it helps and a qualification where one is needed.
 - A contents list for a page with several sections; none for a short piece.
 - Headings that say what the section is on their own.
-- An optional-reading note where an entry links its stage's article, never an inline aside among the steps.
+- A short, labelled note where one page links a related one, never an inline aside among the steps.
 - A sources list at the end when anything was cited. No compulsory FAQ, no repeated conclusion, no sales pitch.
 - Publication date set to the day the page goes live, and never changed afterwards to make old material look new.
 
@@ -95,7 +98,7 @@ These rules came from real reviews, and each one was broken before it was writte
 
 ## 6. Wire it in, check, record
 
-1. Whatever the site lists by hand needs the new page added: a series registry, a sitemap, a feed, a plain-text index for AI readers, a navigation. Check which is which by reading the site's code, not by assuming.
+1. Whatever the site lists by hand needs the new page added: a registry for a series or journal, a sitemap, a feed, a plain-text index for AI readers, a navigation. Check which is which by reading the site's code, not by assuming.
 2. Read the page once as its one reader, the person who arrived from the title and cannot read code. Mark where they would stall, what they were told that they did not need, and what they needed that is missing. Fix those first.
 3. Run the sweep from step 3 for notes-as-content, and for any internal decisions that drifted in.
 4. Build the site the way its own instructions say, request the new pages, and crawl their links and anchors. Screenshot every figure at desktop and phone width and look at them.
