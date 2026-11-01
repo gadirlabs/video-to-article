@@ -16,7 +16,7 @@ The first time, it asks a few questions and writes the answers into your reposit
 
 ## What it does
 
-1. **Decides what each piece becomes**, from the kinds of page your site already has: a journal or project-log page when the video reports your own work, an article when it answers a question on its own, a guide when it walks through a procedure; nothing at all when it is a promo or a joke. It never invents a kind of page your site does not have.
+1. **Decides what each piece becomes**, from the kinds of page your site already has. A how-to becomes a guide or a recipe page; an explanation becomes an article; an answer to one question becomes an FAQ entry; a video of your own work becomes a case study, a portfolio page or a journal entry; a list stays a list; a promo, a trend or a joke becomes nothing. When the video is the work, a reveal or a dish or a performance, the page is written around the embedded video rather than instead of it. It never invents a kind of page your site does not have.
 2. **Gets the videos and what you said.** Three routes per platform, from pasting links to the official APIs: YouTube's Data API and its caption tracks, TikTok's Display API, the Instagram API with Instagram Login, with transcription where a platform exposes no captions. Your own account only, and never a scrape you did not ask for.
 3. **Adapts the speech.** Opens with what the reader came for, cuts the feed furniture, keeps your voice, applies any corrections made when the video was reviewed, and sources every number.
 4. **Follows your site's pattern exactly**, from the metadata to the way images are imported.

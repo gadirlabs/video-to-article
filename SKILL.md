@@ -27,13 +27,23 @@ Record the answers, the date, and what was left undecided. That file is the brie
 
 ## 1. Decide what each piece becomes
 
-Each video becomes one of the kinds of page the site already has (step 0, question 4), chosen by what the video is, and the person is told which and why before anything is written.
+Each video becomes one of the kinds of page the site already has (step 0, question 4), chosen by what the video is doing, and the person is told which and why before anything is written. Most short videos do one of six things, and most sites have three or four kinds of page; this is the mapping, with a plain post as the fallback for every row.
 
-- **A piece that reports the person's own work** (a stage done, a decision taken, what happened, what is still open) becomes a page in whatever the site uses for that: a journal, a build log, a project series, a changelog. It is a story told in order: what was attempted, what happened, what was decided, what is left. It says plainly what has not been built yet and never claims a result the work has not produced. If the site has no such kind, it becomes an ordinary post that reads the same way.
-- **A piece that answers a question on its own** (how to choose something, where to look for something, why a common habit is wrong) becomes an article or post. It does not report progress and does not depend on the video.
-- **A piece that walks through a procedure** becomes a guide or a documentation page where the site has one, with the steps as steps.
-- When two pages belong together (an entry about a stage and the article that explains a question from that stage), the one links the other in a short, clearly labelled note. Neither assumes the reader saw the video.
-- Some pieces should not become a page: a promo, a joke, a dance, anything with no explanation in it. Say so and move on.
+| What the video does | Examples across trades | The kind of page, where the site has it |
+|---|---|---|
+| **Shows how to do something** | A recipe, a workout, a repair, a software walkthrough, a styling tip, a tax step | A how-to or guide, with the steps as steps; a recipe page for a cook |
+| **Explains or argues something** | Why a common habit is wrong, what a term means, how to choose between options, a myth and the truth | An article |
+| **Answers one question** | A reply to a comment, "do I need X", "how much does Y cost" | An FAQ entry or a short post. These are the pages search engines and AI answers quote most, so a run of them is worth more than it looks |
+| **Shows the person's own work** | A kitchen before and after, a client's transformation, a house they sold, a project they are building, a day on site, a commission from sketch to delivery | A case study, a portfolio or project page, or a journal or log entry if the site keeps one. Told in order: what was asked, what was done, what happened, what is still open, with no result claimed that the work has not produced |
+| **Lists or compares** | Five tools, three mistakes, this versus that, a review | A list article or a comparison |
+| **Sells or performs** | An offer, a launch, a promo, a trend, a dance, a joke, a reaction | Usually nothing. A launch may update the page for that product or service; the rest stay on the feed. Say so and move on |
+
+Two refinements:
+
+- **When the video is the work**, a performance, a before-and-after reveal, a dish being plated, a room being painted, the page is written around the video rather than instead of it: embed it through the platform's own embed, then give the reader what the video cannot (the ingredients, the measurements, the price, the steps, the decisions), and draw the figures that explain it. Never leave a page that is only an embed.
+- **When two pages belong together** (a project page and the article that explains a question from it; a how-to and the FAQ it answers), the one links the other in a short, labelled note. Neither assumes the reader saw the video.
+
+If the site has only one kind of page, every video that becomes a page becomes that kind, written in the register of its row above.
 
 ## 2. Get the videos and what was said
 
